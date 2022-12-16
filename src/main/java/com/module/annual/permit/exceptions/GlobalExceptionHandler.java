@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @RestControllerAdvice
@@ -50,8 +51,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(DataNotAcceptableException.class)
 	public ResponseEntity<Object> handleDataNotAcceptableException(DataNotAcceptableException e) {
+
+		if (Objects.nonNull(e.getParams())) {
+			return responseCreator.createResponse(HttpStatus.BAD_REQUEST, e.getMessage(), null, e.getParams());
+		} else {
+			return responseCreator.createResponse(HttpStatus.BAD_REQUEST, e.getMessage(), null);
+		}
+	}
+
+	@ExceptionHandler(DataAllReadyExistsException.class)
+	public ResponseEntity<Object> handleDataAllReadyExistsException(DataAllReadyExistsException e) {
 		return responseCreator.createResponse(HttpStatus.BAD_REQUEST, e.getMessage(), null);
 	}
+
 
 
 }

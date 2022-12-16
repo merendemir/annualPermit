@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmployeeConverter {
 
-
     public EmployeeResponseDto convertEmployeeToEmployeeResponseDto(Employee employee) {
         return EmployeeResponseDto.builder()
                 .id(employee.getId())

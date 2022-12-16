@@ -1,6 +1,6 @@
 package com.module.annual.permit.util;
 
-import com.module.annual.permit.service.LocaleService;
+import com.module.annual.permit.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import java.util.Map;
 @Service
 public class ResponseCreator {
 
-    private final LocaleService localeService;
+    private final MessageService localeService;
 
     public ResponseEntity<Object> createResponse(HttpStatus httpStatus, String messageCode, Object data) {
         Map<String, Object> map = new HashMap<>();

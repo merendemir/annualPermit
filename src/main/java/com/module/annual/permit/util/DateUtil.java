@@ -1,6 +1,5 @@
 package com.module.annual.permit.util;
 
-import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -17,6 +16,16 @@ public class DateUtil {
 
 		return currentYear - previousYear;
 	}
+
+	public static Date getFutureYearByDateAndYear(Date date, int year) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+
+		calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + year);
+
+		return calendar.getTime();
+	}
+
 
 	public static Boolean isDayWeekend(Date date) {
 		Calendar calendar = Calendar.getInstance();
@@ -42,5 +51,17 @@ public class DateUtil {
 		return calendar.getTime();
 	}
 
+	public static Date getStartOfDay(Date date) {
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.setTime(date);
+
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+
+		return calendar.getTime();
+	}
 
 }
