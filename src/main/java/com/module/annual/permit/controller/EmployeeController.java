@@ -3,6 +3,7 @@ package com.module.annual.permit.controller;
 import com.module.annual.permit.dto.NewEmployeeRequestDto;
 import com.module.annual.permit.service.EmployeeService;
 import com.module.annual.permit.util.ResponseCreator;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ public class EmployeeController {
 
     private final ResponseCreator responseCreator;
 
+    @Operation(summary = "Create new Employee", description = "name and lastName cannot be blank")
     @PostMapping("/create")
     public ResponseEntity<Object> createNewEmployee(@RequestParam String lang,
                                                     @Valid @RequestBody NewEmployeeRequestDto newEmployeeRequestDto) {

@@ -40,11 +40,11 @@ public class AnnualPermitService {
 
     private final EmployeeService employeeService;
 
-    public AnnualPermit save(AnnualPermit annualPermit) {
+    private AnnualPermit save(AnnualPermit annualPermit) {
         return annualPermitRepository.save(annualPermit);
     }
 
-    public AnnualPermit findEmployePendingAnnualPermit(Long employeeId) {
+    private AnnualPermit findEmployePendingAnnualPermit(Long employeeId) {
         return annualPermitRepository.findByEmployeeIdAndAnnualPermitStatus(employeeId, AnnualPermitStatus.PENDING)
                 .orElseThrow(
                         () ->  new DataNotFoundException("employee.not.exists.pending.request"));
@@ -154,7 +154,7 @@ public class AnnualPermitService {
         return entitlementInPeriod - usedAnnualPermit;
     }
 
-    public int getUsedAnnualPermitDayInPeriodByEmployee(Employee employee) {
+    private int getUsedAnnualPermitDayInPeriodByEmployee(Employee employee) {
         Date startDate = employee.getStartDate();
 
         Date beginOfPeriod = this.getBeginOfPeriodByEmployeStartDate(startDate);
@@ -167,7 +167,7 @@ public class AnnualPermitService {
                 .reduce(0, Integer::sum);
     }
 
-    public int getAnnualPermitEntitlementByWorkedYear(int workedYear) {
+    private int getAnnualPermitEntitlementByWorkedYear(int workedYear) {
         if (workedYear < 1) {
             return numberOfAnnualPermitDayForNewEmployee;
         } else if (workedYear <= 5) {
@@ -179,7 +179,7 @@ public class AnnualPermitService {
         }
     }
 
-    public int getTotalWorkedYearByStartDate(Date startDate) {
+    private int getTotalWorkedYearByStartDate(Date startDate) {
         return DateUtil.getYearDifferenceBetweenDates(new Date(), startDate);
     }
 

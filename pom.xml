@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.module</groupId>
-	<artifactId>permission</artifactId>
+	<artifactId>Annual-Permit</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>permission</name>
+	<name>Annual-Permit</name>
 	<description>Annual Permit Service</description>
 	<properties>
 		<java.version>1.8</java.version>

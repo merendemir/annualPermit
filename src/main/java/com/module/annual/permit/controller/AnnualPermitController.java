@@ -18,17 +18,18 @@ public class AnnualPermitController {
 
     private final ResponseCreator responseCreator;
 
-    @Operation(description = "Date format it should be dd.mm.yyyy")
+    @Operation(summary = "This api, generates annual permit request for employees", description = "startDate and endDate must be in the format dd.mm.yyyy")
     @PostMapping("/request")
     public ResponseEntity<Object> createAnnualPermitRequest(@RequestParam String lang,
                                                             @RequestParam Long employeeId,
-                                                            @RequestParam String annualPermitStartDate,
-                                                            @RequestParam String annualPermitEndDate) {
+                                                            @RequestParam String startDate,
+                                                            @RequestParam String endDate) {
 
         return responseCreator.createResponse(HttpStatus.CREATED, "annual.permit.request.success",
-                annualPermitService.createAnnualPermitRequest(employeeId, annualPermitStartDate, annualPermitEndDate));
+                annualPermitService.createAnnualPermitRequest(employeeId, startDate, endDate));
     }
 
+    @Operation(summary = "This api, fetch available annual permit for employees", description = "employeeId cannot be null")
     @GetMapping("/available")
     public ResponseEntity<Object> getAvailableAnnualPermitByEmployeeId(@RequestParam String lang,
                                                                        @RequestParam Long employeeId) {
@@ -37,6 +38,7 @@ public class AnnualPermitController {
                 annualPermitService.getAvailableAnnualPermitByEmployeeId(employeeId));
     }
 
+    @Operation(summary = "This api for approving or denying annual permit", description = "This api is for admin only!")
     @PostMapping("/admin/decision")
     public ResponseEntity<Object> ApproveOrRejectPermitRequest(@RequestParam String lang,
                                                                @RequestParam Long employeeId,
