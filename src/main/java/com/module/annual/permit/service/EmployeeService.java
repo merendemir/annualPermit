@@ -1,10 +1,8 @@
 package com.module.annual.permit.service;
 
-import ch.qos.logback.core.util.TimeUtil;
 import com.module.annual.permit.converter.EmployeeConverter;
 import com.module.annual.permit.dto.NewEmployeeRequestDto;
 import com.module.annual.permit.dto.EmployeeResponseDto;
-import com.module.annual.permit.exceptions.DataNotAcceptableException;
 import com.module.annual.permit.exceptions.DataNotFoundException;
 import com.module.annual.permit.model.AnnualPermit;
 import com.module.annual.permit.model.Employee;
@@ -20,14 +18,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class EmployeeService {
 
-    static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+    @Value("${number-of.annual.permit.day.for.new.employee}")
+    private int numberOfAnnualPermitDayForNewEmployee;
 
     @Value("${number-of.annual.permit.day.for.between.one-and-five-equal}")
     private int numberOfAnnualPermitDayForBetweenOneAndFiveEqual;
@@ -41,20 +41,23 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    private final AnnualPermitService annualPermitService;
+    private final EmployeeAnnualPermitService employeeAnnualPermitService;
 
     private final EmployeeConverter employeeConverter;
-
 
     public EmployeeResponseDto createNewEmployee(NewEmployeeRequestDto requestDto) {
         Employee employee = new Employee();
 
         employee.setName(requestDto.getName());
         employee.setLastName(requestDto.getLastName());
-        employee.setAnnualPermit(annualPermitService.createNewAnnualPermit());
+        employee.setAnnualPermit(employeeAnnualPermitService.createNewAnnualPermit());
 
         return employeeConverter.convertEmployeeToEmployeeResponseDto(
-                    employeeRepository.save(employee));
+                    this.save(employee));
+    }
+
+    public Employee save(Employee employee) {
+        return employeeRepository.save(employee);
     }
 
     public EmployeeResponseDto getEmployeeById(Long employeeId) {
@@ -79,7 +82,7 @@ public class EmployeeService {
 
             annualPermit.setRemainingDaysOff(this.calculateEmployeeNewAnnualPermit(employee));
 
-            annualPermitService.save(annualPermit);
+            employeeAnnualPermitService.save(annualPermit);
         });
     }
 
@@ -108,45 +111,5 @@ public class EmployeeService {
 
         return newAnnualPermit;
     }
-
-    public boolean createAnnualPermitRequest (Long employeeId, String annualPermitStartDate, String annualPermitEndDate) {
-
-        Date startDate;
-        Date endDate;
-
-        try {
-            startDate = simpleDateFormat.parse(annualPermitStartDate);
-        } catch (Exception e) {
-            throw new DataNotAcceptableException("invalid.annual.permit.start.date");
-        }
-
-        try {
-            endDate = simpleDateFormat.parse(annualPermitStartDate);
-        } catch (Exception e) {
-            throw new DataNotAcceptableException("invalid.annual.permit.end.date");
-        }
-
-        if (startDate.equals(endDate)) {
-            throw new DataNotAcceptableException("annual.permit.start.end.date.cannot.equal");
-        }
-
-        if (endDate.before(startDate)) {
-            throw new DataNotAcceptableException("annual.permit.date.cannot.earlier.start.date");
-        }
-
-        AnnualPermit employeeAnnualPermit = this.findByIdOrElseThrow(employeeId).getAnnualPermit();
-
-        Long requiredAnnualPermitDays = DateUtil.getDayDifferenceBetweenDates(startDate, endDate);
-
-        if (employeeAnnualPermit.getRemainingDaysOff() < requiredAnnualPermitDays) {
-            throw new DataNotAcceptableException("invalid.annual.permit.request.day");
-        }
-
-
-
-        return true;
-
-    }
-
 
 }

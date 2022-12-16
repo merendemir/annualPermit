@@ -1,6 +1,7 @@
 package com.module.annual.permit.controller;
 
 import com.module.annual.permit.dto.NewEmployeeRequestDto;
+import com.module.annual.permit.service.AnnualPermitRequestService;
 import com.module.annual.permit.service.EmployeeService;
 import com.module.annual.permit.util.ResponseCreator;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +24,8 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
+    private final AnnualPermitRequestService annualPermitRequestService;
+
     private final ResponseCreator responseCreator;
 
     @PostMapping
@@ -41,23 +44,12 @@ public class EmployeeController {
                 employeeService.getEmployeeById(employeeId));
     }
 
-    @GetMapping("annual/permit")
+    @GetMapping("/annual/permit")
     public ResponseEntity<Object> getAnnualPermitByEmployeeId(@RequestParam String lang,
                                                               @RequestParam Long employeeId) {
 
         return responseCreator.createResponse(HttpStatus.CREATED, "employee.annual.permit.fetch.success",
                 employeeService.getAnnualPermitByEmployeeId(employeeId));
-    }
-
-    @Operation(description = "Date fromat it shoult be dd-mm-yyyy")
-    @PostMapping("/annual/permit")
-    public ResponseEntity<Object> createAnnualPermitRequest(@RequestParam String lang,
-                                                            @RequestParam Long employeeId,
-                                                            @RequestParam @Valid @NotBlank String annualPermitStartDate,
-                                                            @RequestParam @Valid @NotBlank String annualPermitEndDate) {
-
-        return responseCreator.createResponse(HttpStatus.CREATED, "annual.permit.request.success",
-                employeeService.createAnnualPermitRequest(employeeId, annualPermitStartDate, annualPermitEndDate));
     }
 
 }

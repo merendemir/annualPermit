@@ -37,19 +37,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Object> handleException (Exception e) {
+	public ResponseEntity<Object> handleException(Exception e) {
 		log.error("Exception :::{}" , e.getMessage());
 		e.printStackTrace();
 		return responseCreator.createResponse(HttpStatus.INTERNAL_SERVER_ERROR, "something.went.wrong", null);
 	}
 
 	@ExceptionHandler(DataNotFoundException.class)
-	public ResponseEntity<Object> HandleDataNotFoundException (DataNotFoundException e) {
+	public ResponseEntity<Object> HandleDataNotFoundException(DataNotFoundException e) {
 		return responseCreator.createResponse(HttpStatus.BAD_REQUEST, e.getMessage(), null, e.getParams());
 	}
 
 	@ExceptionHandler(DataNotAcceptableException.class)
-	public ResponseEntity<Object> handleDataNotAcceptableException (DataNotFoundException e) {
+	public ResponseEntity<Object> handleDataNotAcceptableException(DataNotAcceptableException e) {
 		return responseCreator.createResponse(HttpStatus.BAD_REQUEST, e.getMessage(), null);
 	}
 

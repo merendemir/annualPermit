@@ -18,13 +18,13 @@ import java.util.Date;
 @RequestMapping("/api/v1/public/holiday")
 public class PublicHolidayController {
 
-    static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     private final PublicHolidayService publicHolidayService;
 
     private final ResponseCreator responseCreator;
 
-    @Operation(description = "Date fromat it shoult be dd-mm-yyyy")
+    @Operation(description = "Date format it shoult be dd.mm.yyyy")
     @PostMapping
     public ResponseEntity<Object> savePublicHoliday(@RequestParam String lang,
                                                     @RequestParam String date) {

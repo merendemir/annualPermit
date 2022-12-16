@@ -26,7 +26,7 @@ public class Employee {
     private String lastName;
 
     @CreationTimestamp
-    private Date startDate = new Date();
+    private Date startDate;
 
     @JoinColumn
     @OneToOne
