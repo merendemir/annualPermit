@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @FeignClient(name = "publicHoliday", url = "https://api.ubilisim.com/")
 public interface FeignCallForPublicHoliday {
+
 	@GetMapping("/resmitatiller")
 	ResponseEntity<Object> getPublicHolidaysFromExternal();
 }

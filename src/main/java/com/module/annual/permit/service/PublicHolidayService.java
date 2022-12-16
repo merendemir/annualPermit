@@ -26,11 +26,22 @@ public class PublicHolidayService {
 
     private final FeignCallForPublicHoliday feignCallForPublicHoliday;
 
+    /**
+     * This method runs before the application is run
+     */
     @PostConstruct
     public void init() {
         this.updatePublicHolidayAsFormatList();
     }
 
+    /**
+     *
+     * @param date @Description The day you want to know whether it is a public holiday or not
+     * @return Boolean
+     *
+     * This method checks whether the given date is in the publicHolidayAsFormatList
+     * and decides whether the date is a public holiday or not.
+     */
     public static Boolean isDayPublicHoliday(Date date) {
         try {
             String formattedDate = publicHolidayExternalFormat.format(date);
@@ -46,6 +57,9 @@ public class PublicHolidayService {
         return false;
     }
 
+    /**
+     * This method saves public holiday dates in the publicHolidayAsFormatList list by making a FeignCall.
+     */
     public void updatePublicHolidayAsFormatList() {
         try {
 

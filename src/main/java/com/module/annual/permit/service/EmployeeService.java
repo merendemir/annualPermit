@@ -19,20 +19,31 @@ public class EmployeeService {
 
     private final EmployeeConverter employeeConverter;
 
-    public EmployeeResponseDto createNewEmployee(NewEmployeeRequestDto requestDto) {
+    /**
+     * @param newEmployeeRequestDto @Description Containing the necessary information to create a new employee.
+     * @return EmployeeResponseDto
+     *
+     * This method creates a new employee with name and last name in newEmployeeRequestDto
+     * And then converts from Employee to Employee ResponseDto
+     */
+    public EmployeeResponseDto createNewEmployee(NewEmployeeRequestDto newEmployeeRequestDto) {
         Employee savedEmployee = employeeRepository.save(
                 Employee.builder()
-                        .name(requestDto.getName())
-                        .lastName(requestDto.getLastName())
+                        .name(newEmployeeRequestDto.getName())
+                        .lastName(newEmployeeRequestDto.getLastName())
                         .build());
 
         return employeeConverter.convertEmployeeToEmployeeResponseDto(savedEmployee);
     }
 
-    public Employee save(Employee employee) {
-        return employeeRepository.save(employee);
-    }
 
+    /**
+     * @param employeeId @Description The id of the employee whose information is desired to be accessed.
+     * @return Employee
+     *
+     * This method searches employee in database with employee Id
+     * If found, returns Employee, otherwise throws DataNotFoundException.
+     */
     public Employee findByIdOrElseThrow(Long employeeId) {
         return employeeRepository.findById(employeeId)
                 .orElseThrow(
