@@ -111,7 +111,7 @@ public class AnnualPermitService {
 
         while (annualPermitDate.before(endDate)) {
 
-            if (!DateUtil.isDayWeekend(annualPermitDate) /*&& !PublicHolidayService.isDayPublicHoliday(annualPermitDate)*/) {
+            if (!DateUtil.isDayWeekend(annualPermitDate) && !PublicHolidayService.isDayPublicHoliday(annualPermitDate)) {
                 requiredAnnualPermitDays ++;
             }
 
