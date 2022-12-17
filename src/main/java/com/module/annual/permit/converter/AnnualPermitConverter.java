@@ -6,6 +6,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AnnualPermitConverter {
+
+    /**
+     * @param annualPermit @Description AnnualPermit model to be converted.
+     * @return AnnualPermitResponseDto
+     *
+     * This method converts AnnualPermit to AnnualPermitResponseDto.
+     */
     public AnnualPermitResponseDto convertAnnualPermitToAnnualPermitResponseDto(AnnualPermit annualPermit) {
         return AnnualPermitResponseDto.builder()
                 .startDate(annualPermit.getStartDate())
