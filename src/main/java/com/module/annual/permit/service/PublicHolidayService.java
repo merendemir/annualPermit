@@ -20,9 +20,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PublicHolidayService {
 
-    static List<String> publicHolidayAsFormatList = new ArrayList<>();
+    public static List<String> publicHolidayAsFormatList = new ArrayList<>();
 
-    static SimpleDateFormat publicHolidayExternalFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static SimpleDateFormat publicHolidayExternalFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     private final FeignCallForPublicHoliday feignCallForPublicHoliday;
 

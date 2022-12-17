@@ -13,7 +13,7 @@ public class AnnualPermitConverterTest {
     private AnnualPermitConverter annualPermitConverter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         annualPermitConverter = new AnnualPermitConverter();
     }
 

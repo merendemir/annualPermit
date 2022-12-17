@@ -20,12 +20,11 @@ public class ResponseCreatorTest {
     private MessageService messageService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         messageService = mock(MessageService.class);
         responseCreator = new ResponseCreator(
                 messageService);
     }
-
 
     @Test
     public void whenCreateResponseCalled_itShouldReturnResponseEntity() {

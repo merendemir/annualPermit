@@ -14,7 +14,7 @@ public class EmployeeConverterTest {
     private EmployeeConverter employeeConverter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         employeeConverter = new EmployeeConverter();
     }
 

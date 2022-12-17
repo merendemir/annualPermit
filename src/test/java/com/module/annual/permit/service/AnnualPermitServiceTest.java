@@ -41,7 +41,7 @@ public class AnnualPermitServiceTest {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         annualPermitRepository = mock(AnnualPermitRepository.class);
         employeeService = mock(EmployeeService.class);
         annualPermitConverter = mock(AnnualPermitConverter.class);
@@ -74,7 +74,6 @@ public class AnnualPermitServiceTest {
     @Test
     public void whenFindEmployeePendingAnnualPermitCalledAndExistsEmployeePendingRequest_itShouldReturnAnnualPermit() {
         //given
-
         Employee employee = Employee.builder()
                 .id(2L)
                 .build();
@@ -120,7 +119,7 @@ public class AnnualPermitServiceTest {
     }
 
     @Test
-    public void whenGetTotalWorkedYearByStartDate_itShouldReturnTotalWorkedYear() {
+    public void whenGetTotalWorkedYearByStartDateCalled_itShouldReturnTotalWorkedYear() {
         //given
         Date startDate = new Date();
 
@@ -134,7 +133,7 @@ public class AnnualPermitServiceTest {
     }
 
     @Test
-    public void whenGetBeginOfPeriodByEmployeeStartDate_itShouldReturnDate() {
+    public void whenGetBeginOfPeriodByEmployeeStartDateCalled_itShouldReturnDate() {
         //given
         Date startDate = new Date();
         int workedYear = 0;
@@ -150,7 +149,7 @@ public class AnnualPermitServiceTest {
     }
 
     @Test
-    public void whenGetEndOfPeriodByEmployeeStartDate_itShouldReturnDate() {
+    public void whenGetEndOfPeriodByEmployeeStartDateCalled_itShouldReturnDate() {
         //given
         Date startDate = new Date();
         Calendar calendar = Calendar.getInstance();
@@ -213,7 +212,6 @@ public class AnnualPermitServiceTest {
 
     @Test
         public void whenGetAnnualPermitDeservesByWorkedYearCalled_itShouldReturnYear() {
-
         //given
         annualPermitService.numberOfAnnualPermitDayForNewEmployee = 5;
         annualPermitService.numberOfAnnualPermitDayForBetweenOneAndFiveEqual = 15;
@@ -238,7 +236,7 @@ public class AnnualPermitServiceTest {
     }
 
     @Test
-    public void whenGetUsedAnnualPermitDayInPeriodByEmployee_itShouldReturnUsedAnnualPermitDay() {
+    public void whenGetUsedAnnualPermitDayInPeriodByEmployeeCalled_itShouldReturnUsedAnnualPermitDay() {
         //given
         Date currentDate = new Date();
         Employee employee = Employee.builder()
@@ -275,7 +273,7 @@ public class AnnualPermitServiceTest {
     }
 
     @Test
-    public void whenGetAvailableAnnualPermitByEmployeeId_itShouldReturnAvailableAnnualPermitDay() {
+    public void whenGetAvailableAnnualPermitByEmployeeIdCalled_itShouldReturnAvailableAnnualPermitDay() {
         //given
         annualPermitService.numberOfAnnualPermitDayForNewEmployee = 5;
         Date currentDate = new Date();

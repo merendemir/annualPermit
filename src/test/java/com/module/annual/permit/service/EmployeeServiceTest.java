@@ -27,7 +27,7 @@ public class EmployeeServiceTest {
     private EmployeeConverter employeeConverter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         employeeRepository = mock(EmployeeRepository.class);
         employeeConverter = mock(EmployeeConverter.class);
 
@@ -39,7 +39,6 @@ public class EmployeeServiceTest {
     @Test
     public void whenCreateNewEmployeeCalled_thenItShouldReturnEmployeeResponseDto() {
         //given
-
         NewEmployeeRequestDto newEmployeeRequestDto = NewEmployeeRequestDto.builder()
                 .name("testName")
                 .lastName("testLastName")

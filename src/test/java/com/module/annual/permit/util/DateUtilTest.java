@@ -86,7 +86,6 @@ public class DateUtilTest {
 
         Date startOfDay = calendar.getTime();
 
-
         //then
         Date actual = DateUtil.getStartOfDay(currentDate);
 
