@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
 public class DataNotAcceptableException extends RuntimeException {
 
 	private String[] params;

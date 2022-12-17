@@ -1,14 +1,14 @@
 package com.module.annual.permit.dto;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.util.Date;
 
 @Builder
 @Getter
-@ToString
+@EqualsAndHashCode
 public class EmployeeResponseDto {
 
     private Long id;

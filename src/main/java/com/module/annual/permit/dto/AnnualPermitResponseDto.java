@@ -2,13 +2,13 @@ package com.module.annual.permit.dto;
 
 import com.module.annual.permit.enums.AnnualPermitStatus;
 import lombok.Builder;
-import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
 
 @Builder
-@ToString
+@EqualsAndHashCode
 public class AnnualPermitResponseDto {
 
     private Date startDate;

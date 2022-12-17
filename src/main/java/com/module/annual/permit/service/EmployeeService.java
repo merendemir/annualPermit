@@ -46,8 +46,7 @@ public class EmployeeService {
      */
     public Employee findByIdOrElseThrow(Long employeeId) {
         return employeeRepository.findById(employeeId)
-                .orElseThrow(
-                        () ->  new DataNotFoundException("employee.not.found.by.id", employeeId.toString()));
+                .orElseThrow( () ->  new DataNotFoundException("employee.not.found.by.id", employeeId.toString()));
     }
 
 }

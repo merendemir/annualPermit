@@ -1,9 +1,13 @@
 package com.module.annual.permit.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtil {
+
+	public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
 	public static int getYearDifferenceBetweenDates(Date currentDate, Date previousDate) {
 		Calendar calendar = Calendar.getInstance();
@@ -63,5 +67,14 @@ public class DateUtil {
 
 		return calendar.getTime();
 	}
+
+	public static String formatDateToSimpleDateFormat(Date date) {
+		return simpleDateFormat.format(date);
+	}
+
+	public static Date parseDateToSimpleDateFormat(String parseDate) throws ParseException {
+		return simpleDateFormat.parse(parseDate);
+	}
+
 
 }

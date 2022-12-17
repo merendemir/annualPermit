@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
@@ -24,24 +23,22 @@ import java.util.Date;
 public class AnnualPermitService {
 
     @Value("${number-of.annual.permit.day.for.new.employee}")
-    private int numberOfAnnualPermitDayForNewEmployee;
+    public int numberOfAnnualPermitDayForNewEmployee;
 
     @Value("${number-of.annual.permit.day.for.between.one-and-five-equal}")
-    private int numberOfAnnualPermitDayForBetweenOneAndFiveEqual;
+    public int numberOfAnnualPermitDayForBetweenOneAndFiveEqual;
 
     @Value("${number-of.annual.permit.day.for.between.five-and-ten-equal}")
-    private int numberOfAnnualPermitDayForBetweenFiveAndTenEqual;
+    public int numberOfAnnualPermitDayForBetweenFiveAndTenEqual;
 
     @Value("${number-of.annual.permit.day.for.greater-ten}")
-    private int numberOfAnnualPermitDayForGreaterTen;
+    public int numberOfAnnualPermitDayForGreaterTen;
 
-    static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    public final AnnualPermitRepository annualPermitRepository;
 
-    private final AnnualPermitRepository annualPermitRepository;
+    public final EmployeeService employeeService;
 
-    private final EmployeeService employeeService;
-
-    private final AnnualPermitConverter annualPermitConverter;
+    public final AnnualPermitConverter annualPermitConverter;
 
     /**
      * @param annualPermit @Description Annual permit to be recorded in the database.
@@ -49,7 +46,7 @@ public class AnnualPermitService {
      *
      * This method takes AnnualPermit model, saves it to database and then returns the saved model.
      */
-    private AnnualPermit save(AnnualPermit annualPermit) {
+    public AnnualPermit save(AnnualPermit annualPermit) {
         return annualPermitRepository.save(annualPermit);
     }
 
@@ -60,10 +57,9 @@ public class AnnualPermitService {
      * This method searches the database whether the employee has a pending request or not.
      * If found, it returns Annual Permit, otherwise it throws a DataNotFoundException.
      */
-    private AnnualPermit findEmployePendingAnnualPermit(Long employeeId) {
+    public AnnualPermit findEmployeePendingAnnualPermit(Long employeeId) {
         return annualPermitRepository.findByEmployeeIdAndAnnualPermitStatus(employeeId, AnnualPermitStatus.PENDING)
-                .orElseThrow(
-                        () ->  new DataNotFoundException("employee.not.exists.pending.request"));
+                .orElseThrow(() ->  new DataNotFoundException("employee.not.exists.pending.request"));
     }
 
     /**
@@ -85,14 +81,8 @@ public class AnnualPermitService {
     public AnnualPermitResponseDto createAnnualPermitRequest (Long employeeId, String annualPermitStartDate, String annualPermitEndDate) {
         Employee employee = employeeService.findByIdOrElseThrow(employeeId);
 
-        Date endOfPeriod = this.getEndOfPeriodByEmployeStartDate(employee.getStartDate());
-        String endOfPeriodAsFormat = "";
-
-        try {
-            endOfPeriodAsFormat = simpleDateFormat.format(endOfPeriod);
-        } catch (Exception e) {
-            log.error("simpleDateFormat format: {}", e.getMessage());
-        }
+        Date endOfPeriod = this.getEndOfPeriodByEmployeeStartDate(employee.getStartDate());
+        String endOfPeriodAsFormat = DateUtil.formatDateToSimpleDateFormat(endOfPeriod);
 
         Boolean employeeHasPendingRequest = annualPermitRepository.existsByEmployeeIdAndAnnualPermitStatus(employee.getId(), AnnualPermitStatus.PENDING);
 
@@ -110,13 +100,13 @@ public class AnnualPermitService {
         Date endDate;
 
         try {
-            startDate = simpleDateFormat.parse(annualPermitStartDate);
+            startDate = DateUtil.parseDateToSimpleDateFormat(annualPermitStartDate);
         } catch (Exception e) {
             throw new DataNotAcceptableException("invalid.annual.permit.start.date");
         }
 
         try {
-            endDate = simpleDateFormat.parse(annualPermitEndDate);
+            endDate = DateUtil.parseDateToSimpleDateFormat(annualPermitEndDate);
         } catch (Exception e) {
             throw new DataNotAcceptableException("invalid.annual.permit.end.date");
         }
@@ -133,7 +123,7 @@ public class AnnualPermitService {
             throw new DataNotAcceptableException("start.date.must.be.after.today");
         }
 
-        if (endDate.after(this.getEndOfPeriodByEmployeStartDate(employee.getStartDate()))) {
+        if (endDate.after(this.getEndOfPeriodByEmployeeStartDate(employee.getStartDate()))) {
             throw new DataNotAcceptableException("end.date.must.be.before", endOfPeriodAsFormat);
         }
 
@@ -198,11 +188,11 @@ public class AnnualPermitService {
      *
      * This method, calculates how much annual permit the employee takes in the relevant year.
      */
-    private int getUsedAnnualPermitDayInPeriodByEmployee(Employee employee) {
+    public int getUsedAnnualPermitDayInPeriodByEmployee(Employee employee) {
         Date startDate = employee.getStartDate();
 
-        Date beginOfPeriod = this.getBeginOfPeriodByEmployeStartDate(startDate);
-        Date endOfPeriod = this.getEndOfPeriodByEmployeStartDate(startDate);
+        Date beginOfPeriod = this.getBeginOfPeriodByEmployeeStartDate(startDate);
+        Date endOfPeriod = this.getEndOfPeriodByEmployeeStartDate(startDate);
 
         return annualPermitRepository.findAllByEmployeeIdAndAnnualPermitStatusAndCreatedOnBetween(
                 employee.getId(), AnnualPermitStatus.APPROVED, beginOfPeriod, endOfPeriod)
@@ -217,7 +207,7 @@ public class AnnualPermitService {
      *
      * This method, calculates the number of days of annual permit it deserves according to the number of years worked.
      */
-    private int getAnnualPermitDeservesByWorkedYear(int workedYear) {
+    public int getAnnualPermitDeservesByWorkedYear(int workedYear) {
         if (workedYear < 1) {
             return numberOfAnnualPermitDayForNewEmployee;
         } else if (workedYear <= 5) {
@@ -235,7 +225,7 @@ public class AnnualPermitService {
      *
      * This method, calculate how many years worked by start date
      */
-    private int getTotalWorkedYearByStartDate(Date startDate) {
+    public int getTotalWorkedYearByStartDate(Date startDate) {
         return DateUtil.getYearDifferenceBetweenDates(new Date(), startDate);
     }
 
@@ -245,7 +235,7 @@ public class AnnualPermitService {
      *
      * This method, calculates period start based on employee start date.
      */
-    private Date getBeginOfPeriodByEmployeStartDate(Date startDate) {
+    public Date getBeginOfPeriodByEmployeeStartDate(Date startDate) {
         int workedYear = this.getTotalWorkedYearByStartDate(startDate);
         return DateUtil.getFutureYearByDateAndYear(startDate, workedYear);
     }
@@ -256,7 +246,7 @@ public class AnnualPermitService {
      *
      * This method, calculates period end based on employee start date.
      */
-    private Date getEndOfPeriodByEmployeStartDate(Date endDate) {
+    public Date getEndOfPeriodByEmployeeStartDate(Date endDate) {
         int workedYear = this.getTotalWorkedYearByStartDate(endDate);
         return DateUtil.getFutureYearByDateAndYear(endDate, workedYear + 1);
     }
@@ -269,7 +259,7 @@ public class AnnualPermitService {
      * This method updates the employee's annual Permit request according to the admin decision regarding annual permit.
      */
     public AnnualPermitResponseDto updateEmployeeAnnualPermitRequestByDecision(Long employeeId, AnnualPermitStatus annualPermitStatus) {
-        AnnualPermit annualPermit = this.findEmployePendingAnnualPermit(employeeId);
+        AnnualPermit annualPermit = this.findEmployeePendingAnnualPermit(employeeId);
         annualPermit.setAnnualPermitStatus(annualPermitStatus);
 
         return annualPermitConverter.convertAnnualPermitToAnnualPermitResponseDto(this.save(annualPermit));
