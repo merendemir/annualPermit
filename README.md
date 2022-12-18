@@ -47,11 +47,11 @@ About the service,
 
 - #### Continue With Swagger Part
 # Swagger
-- #### While the Service is running open **http://localhost:8080/swagger-ui/index.html** on your browser. You will see like this:
+- #### While the Service is running, open the **http://localhost:8080/swagger-ui/index.html** on your browser. You will see like this:
 ![](images/swagger.png)
 # Things to pay attention
 - #### In order to determine the language of API responses and warnings, it is mandatory to send the `lang` value as a parameter to the API.
-- #### You must create an employee with `/api/v1/employee/create` api before requesting annual leave.
+- #### You must create an employee with `/api/v1/employee/create` api before requesting annual permit.
 - #### Note the following when requesting annual leave with the `/api/v1/annual/permit/request` api:
   - #### If the employee has a pending approval annual permit request, cannot create a new one.
   - #### startDate and endDate must be in the format dd.mm.yyyy
