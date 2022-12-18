@@ -5,7 +5,7 @@ About the service,
 - If the annual permit is not approved, it is not deducted from the employee's annual permit period.
 - The number of annual leave that the employee will be entitled to according to the period of work each year can be set in the application.yml file.
 - Weekends (Saturday, Sunday) and public holidays are not counted as Permit.
-- As soon as the service starts to work, it pulls the official holidays in Turkey from **https://api.ubilisim.com/resmitatiller/** and keeps it in its memory as a list.
+- As soon as the service starts to work, it pulls the public holidays in Turkey from **https://api.ubilisim.com/resmitatiller/** and keeps it in its memory as a list.
 - New employees can take up to 5 working days off as an advance. This application is valid for the first year only.
 - When permission requests are created, they are in the status of `PENDING`, after admin approval.
   then it drops to `APPROVED` or `DENIED` status.
@@ -20,7 +20,7 @@ About the service,
 
 ## Setup
 - Before run project you need to start docker desktop
-- After docker is up, run the docker-compose.yml (You can find it in the docker-compose folder.)
+- After docker is up, run the [docker-compose.yml](docker-compose/docker-compose.yml)
 ```
   docker-compose up -d
 ```
@@ -55,12 +55,12 @@ About the service,
 - #### Note the following when requesting annual leave with the `/api/v1/annual/permit/request` api:
   - #### If the employee has a pending approval annual permit request, cannot create a new one.
   - #### startDate and endDate must be in the format dd.mm.yyyy
-  - #### endDate can not equals the startDate
-  - #### endDate can not before the startDate 
-  - #### startDate can not before the today date.
-  - #### endDate must be before the last day of the annual permit period.
-  - #### If the entire date range for which annual permit is requested is a public holiday or weekend, a request not be created.
-  - #### If the employee has no annual permit available, an error message will be returned including the start date of the next annual permit period.
+  - #### endDate can not be equal the startDate
+  - #### endDate can not be earlier than the startDate 
+  - #### startDate can not be earlier than the today.
+  - #### endDate must be earlier than the last day of the annual permit period.
+  - #### If the requested date range for annual permit is within the public holiday or the weekend, the request can not be created.
+  - #### If the employee has no available days for annual permit, an error message will be returned containing the start date of the next annual permit period.
   - #### If the number of days that the employee annual permit requested is greater than the number of available days, an error message containing the number of available days is returned.
 
 
