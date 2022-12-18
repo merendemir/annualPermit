@@ -53,14 +53,15 @@ About the service,
 - #### In order to determine the language of API responses and warnings, it is mandatory to send the `lang` value as a parameter to the API.
 - #### You must create an employee with `/api/v1/employee/create` api before requesting annual leave.
 - #### Note the following when requesting annual leave with the `/api/v1/annual/permit/request` api:
-
   - #### If the employee has a pending approval annual permit request, cannot create a new one.
   - #### startDate and endDate must be in the format dd.mm.yyyy
   - #### endDate can not equals the startDate
   - #### endDate can not before the startDate 
-  - #### startDate must be after today date.
+  - #### startDate can not before the today date.
   - #### endDate must be before the last day of the annual permit period.
-  - #### If the entire date range for which annual permit is requested is a public holiday or weekend, a request for not be created.
+  - #### If the entire date range for which annual permit is requested is a public holiday or weekend, a request not be created.
+  - #### If the employee has no annual permit available, an error message will be returned including the start date of the next annual permit period.
+  - #### If the number of days that the employee annual permit requested is greater than the number of available days, an error message containing the number of available days is returned.
 
 
 
