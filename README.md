@@ -42,7 +42,7 @@ About the service,
 ![](images/db_connect_success.png)
 
 # Running
-- #### Run each project application file on your code ide.
+- #### Run project application file on your code ide.
 - #### After you run application successfully you can check Mysql db on your GUI you have to see created 2 tables which names are `annual_permit` and `employee`
 ![](images/created_tables.png)
 
