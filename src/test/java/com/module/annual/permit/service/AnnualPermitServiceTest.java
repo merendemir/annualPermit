@@ -565,8 +565,8 @@ public class AnnualPermitServiceTest {
         when(DateUtil.getYearDifferenceBetweenDates(currentDate, employee.getStartDate())).thenReturn(0); //this is for getTotalWorkedYearByStartDate
         when(DateUtil.getFutureYearByDateAndYear(employee.getStartDate(), 0)).thenReturn(currentDate); // this is for getBeginOfPeriodByEmployeeStartDate
         when(DateUtil.getFutureYearByDateAndYear(employee.getStartDate(), 1)).thenReturn(oneYearLater); //this is for getEndOfPeriodByEmployeeStartDate
-        when(DateUtil.parseDateToSimpleDateFormat(annualPermitStartDate)).thenReturn(currentDate);
-        when(DateUtil.parseDateToSimpleDateFormat(annualPermitEndDate)).thenReturn(this.getOneDayEarlier(currentDate));
+        when(DateUtil.parseDateToSimpleDateFormat(annualPermitStartDate)).thenReturn(currentDate); //this is for startDate
+        when(DateUtil.parseDateToSimpleDateFormat(annualPermitEndDate)).thenReturn(this.getOneDayEarlier(currentDate)); //this is for endDate
 
         when(annualPermitRepository.findAllByEmployeeIdAndAnnualPermitStatusAndCreatedOnBetween(
                 employee.getId(),
@@ -611,8 +611,8 @@ public class AnnualPermitServiceTest {
         when(DateUtil.getYearDifferenceBetweenDates(currentDate, employee.getStartDate())).thenReturn(0); //this is for getTotalWorkedYearByStartDate
         when(DateUtil.getFutureYearByDateAndYear(employee.getStartDate(), 0)).thenReturn(currentDate); // this is for getBeginOfPeriodByEmployeeStartDate
         when(DateUtil.getFutureYearByDateAndYear(employee.getStartDate(), 1)).thenReturn(oneYearLater); //this is for getEndOfPeriodByEmployeeStartDate
-        when(DateUtil.parseDateToSimpleDateFormat(annualPermitStartDate)).thenReturn(currentDate);
-        when(DateUtil.parseDateToSimpleDateFormat(annualPermitEndDate)).thenReturn(this.getOneDayLater(currentDate));
+        when(DateUtil.parseDateToSimpleDateFormat(annualPermitStartDate)).thenReturn(currentDate); //this is for startDate
+        when(DateUtil.parseDateToSimpleDateFormat(annualPermitEndDate)).thenReturn(this.getOneDayLater(currentDate)); //this is for endDate
         when(DateUtil.getStartOfDay(any(Date.class))).thenReturn(this.getOneDayLater(currentDate));
 
         when(annualPermitRepository.findAllByEmployeeIdAndAnnualPermitStatusAndCreatedOnBetween(
@@ -658,8 +658,8 @@ public class AnnualPermitServiceTest {
         when(DateUtil.getYearDifferenceBetweenDates(currentDate, employee.getStartDate())).thenReturn(0); //this is for getTotalWorkedYearByStartDate
         when(DateUtil.getFutureYearByDateAndYear(employee.getStartDate(), 0)).thenReturn(currentDate); // this is for getBeginOfPeriodByEmployeeStartDate
         when(DateUtil.getFutureYearByDateAndYear(employee.getStartDate(), 1)).thenReturn(currentDate); //this is for getEndOfPeriodByEmployeeStartDate
-        when(DateUtil.parseDateToSimpleDateFormat(annualPermitStartDate)).thenReturn(currentDate);
-        when(DateUtil.parseDateToSimpleDateFormat(annualPermitEndDate)).thenReturn(this.getOneDayLater(currentDate));
+        when(DateUtil.parseDateToSimpleDateFormat(annualPermitStartDate)).thenReturn(currentDate); //this is for startDate
+        when(DateUtil.parseDateToSimpleDateFormat(annualPermitEndDate)).thenReturn(this.getOneDayLater(currentDate)); //this is for endDate
         when(DateUtil.getStartOfDay(any(Date.class))).thenReturn(new Date(0));
 
         when(annualPermitRepository.findAllByEmployeeIdAndAnnualPermitStatusAndCreatedOnBetween(
@@ -708,8 +708,8 @@ public class AnnualPermitServiceTest {
         when(DateUtil.getYearDifferenceBetweenDates(currentDate, employee.getStartDate())).thenReturn(0); //this is for getTotalWorkedYearByStartDate
         when(DateUtil.getFutureYearByDateAndYear(employee.getStartDate(), 0)).thenReturn(currentDate); // this is for getBeginOfPeriodByEmployeeStartDate
         when(DateUtil.getFutureYearByDateAndYear(employee.getStartDate(), 1)).thenReturn(oneYearLater); //this is for getEndOfPeriodByEmployeeStartDate
-        when(DateUtil.parseDateToSimpleDateFormat(annualPermitStartDate)).thenReturn(currentDate);
-        when(DateUtil.parseDateToSimpleDateFormat(annualPermitEndDate)).thenReturn(oneDayLater);
+        when(DateUtil.parseDateToSimpleDateFormat(annualPermitStartDate)).thenReturn(currentDate); //this is for startDate
+        when(DateUtil.parseDateToSimpleDateFormat(annualPermitEndDate)).thenReturn(oneDayLater); //this is for endDate
         when(DateUtil.getStartOfDay(any(Date.class))).thenReturn(new Date(0));
         when(DateUtil.getFutureDate(currentDate, 1)).thenReturn(oneDayLater);
         when(DateUtil.isDayWeekend(currentDate)).thenReturn(true);
@@ -802,6 +802,40 @@ public class AnnualPermitServiceTest {
         verifyNoInteractions(annualPermitConverter);
     }
 
+    @Test
+    public void whenGetEmployeeUsedAdvanceCalled_itShouldReturnTotalUsedAdvance() {
+        //given
+        Date currentDate = new Date();
+        Employee employee = Employee.builder()
+                .id(1L)
+                .startDate(this.getOneYearEarlier(currentDate))
+                .build();
+
+        AnnualPermit annualPermit = AnnualPermit.builder()
+                .annualPermitDays(4)
+                .build();
+
+
+        //when
+        when(DateUtil.getFutureYearByDateAndYear(employee.getStartDate(), 1)).thenReturn(currentDate);
+        when(annualPermitRepository.findAllByEmployeeIdAndAnnualPermitStatusAndCreatedOnBetween(
+                employee.getId(),
+                AnnualPermitStatus.APPROVED,
+                employee.getStartDate(),
+                currentDate)).thenReturn(Collections.singletonList(annualPermit));
+
+        int actual = annualPermitService.getEmployeeUsedAdvanceAnnualPermit(employee);
+
+        assertEquals(annualPermit.getAnnualPermitDays(), actual);
+
+        verify(annualPermitRepository, times(1))
+                .findAllByEmployeeIdAndAnnualPermitStatusAndCreatedOnBetween(
+                        employee.getId(),
+                        AnnualPermitStatus.APPROVED,
+                        employee.getStartDate(),
+                        currentDate);
+    }
+
     public Date getOneYearLater(Date date) {
         return new Date(date.getTime() + 366 * 24 * 60 * 60 *1000L);
     }
@@ -811,6 +845,10 @@ public class AnnualPermitServiceTest {
     }
     public Date getOneDayEarlier(Date date) {
         return new Date(date.getTime() - 25 * 60 * 61 * 1000L);
+    }
+
+    public Date getOneYearEarlier(Date date) {
+        return new Date(date.getTime() - 366 * 24 * 60 * 60 * 1000L);
     }
 
 }
