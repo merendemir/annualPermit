@@ -173,9 +173,13 @@ public class AnnualPermitService {
     public int getAvailableAnnualPermitByEmployeeId(Long employeeId) {
         Employee employee = employeeService.findByIdOrElseThrow(employeeId);
 
-        int entitlementInPeriod =
-                this.getAnnualPermitDeservesByWorkedYear(
-                        this.getTotalWorkedYearByStartDate(employee.getStartDate()));
+        int totalWorkedYear = this.getTotalWorkedYearByStartDate(employee.getStartDate());
+
+        int entitlementInPeriod = this.getAnnualPermitDeservesByWorkedYear(totalWorkedYear);;
+
+        if (totalWorkedYear == 1) {  // if the employee has used the advance, it is deducted from their annual permit in the 1st year
+            entitlementInPeriod = entitlementInPeriod - this.getEmployeeUsedAdvanceAnnualPermit(employee);
+        }
 
         int usedAnnualPermit = this.getUsedAnnualPermitDayInPeriodByEmployee(employee);
 
@@ -263,5 +267,23 @@ public class AnnualPermitService {
         annualPermit.setAnnualPermitStatus(annualPermitStatus);
 
         return annualPermitConverter.convertAnnualPermitToAnnualPermitResponseDto(this.save(annualPermit));
+    }
+
+
+    /**
+     * @param employee @Description The amount of advance used by the employee to be learned.
+     * @return Used advance amount.
+     *
+     * This method returns how much advance annual permit the employee has used.
+     */
+    public int getEmployeeUsedAdvanceAnnualPermit(Employee employee) {
+        Date startDate = employee.getStartDate();
+        Date endOfFirstYear = DateUtil.getFutureYearByDateAndYear(startDate, 1);
+
+        return annualPermitRepository.findAllByEmployeeIdAndAnnualPermitStatusAndCreatedOnBetween(
+                        employee.getId(), AnnualPermitStatus.APPROVED, startDate, endOfFirstYear)
+                .stream()
+                .map(AnnualPermit::getAnnualPermitDays)
+                .reduce(0, Integer::sum);
     }
 }
