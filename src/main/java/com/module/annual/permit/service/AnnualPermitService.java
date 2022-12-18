@@ -120,7 +120,7 @@ public class AnnualPermitService {
         }
 
         if (startDate.before(DateUtil.getStartOfDay(new Date()))){
-            throw new DataNotAcceptableException("start.date.must.be.after.today");
+            throw new DataNotAcceptableException("start.date.cannot.be.earlier.today");
         }
 
         if (endDate.after(this.getEndOfPeriodByEmployeeStartDate(employee.getStartDate()))) {
