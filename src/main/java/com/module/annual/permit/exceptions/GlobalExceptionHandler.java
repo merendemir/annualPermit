@@ -64,6 +64,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return responseCreator.createResponse(HttpStatus.BAD_REQUEST, e.getMessage(), null);
 	}
 
-
-
 }

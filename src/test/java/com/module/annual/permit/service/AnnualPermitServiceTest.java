@@ -260,6 +260,7 @@ public class AnnualPermitServiceTest {
                 currentDate,
                 oneYearLater)).thenReturn(Collections.singletonList(annualPermit));
 
+        //then
         int actual = annualPermitService.getUsedAnnualPermitDayInPeriodByEmployee(employee);
 
         assertEquals(annualPermit.getAnnualPermitDays(), actual);
@@ -299,7 +300,9 @@ public class AnnualPermitServiceTest {
                 currentDate,
                 oneYearLater)).thenReturn(Collections.singletonList(annualPermit));
 
+        //then
         int actual = annualPermitService.getAvailableAnnualPermitByEmployeeId(employee.getId());
+
         assertEquals(2, actual);
 
         verify(employeeService, times(1)).findByIdOrElseThrow(employee.getId());
@@ -366,7 +369,9 @@ public class AnnualPermitServiceTest {
         when(annualPermitRepository.save(any(AnnualPermit.class))).thenReturn(annualPermit);
         when(annualPermitConverter.convertAnnualPermitToAnnualPermitResponseDto(annualPermit)).thenReturn(annualPermitResponseDto);
 
+        //then
         AnnualPermitResponseDto actual = annualPermitService.createAnnualPermitRequest(employee.getId(), annualPermitStartDate, annualPermitEndDate);
+
         assertEquals(annualPermitResponseDto, actual);
 
         verify(employeeService, times(2)).findByIdOrElseThrow(employee.getId());
@@ -438,7 +443,9 @@ public class AnnualPermitServiceTest {
                 currentDate,
                 oneYearLater)).thenReturn(Collections.singletonList(annualPermit));
 
+        //then
         AnnualPermitResponseDto actual = annualPermitService.createAnnualPermitRequest(employee.getId(), null, null);
+
         assertNull(actual);
 
         verify(employeeService, times(2)).findByIdOrElseThrow(employee.getId());
@@ -482,7 +489,9 @@ public class AnnualPermitServiceTest {
                 currentDate,
                 oneYearLater)).thenReturn(new ArrayList<>());
 
+        //then
         AnnualPermitResponseDto actual = annualPermitService.createAnnualPermitRequest(employee.getId(), annualPermitStartDate, null);
+
         assertNull(actual);
 
         verify(employeeService, times(2)).findByIdOrElseThrow(employee.getId());
@@ -528,7 +537,9 @@ public class AnnualPermitServiceTest {
                 currentDate,
                 oneYearLater)).thenReturn(new ArrayList<>());
 
+        //then
         AnnualPermitResponseDto actual = annualPermitService.createAnnualPermitRequest(employee.getId(), annualPermitStartDate, annualPermitEndDate);
+
         assertNull(actual);
 
         verify(employeeService, times(2)).findByIdOrElseThrow(employee.getId());
@@ -574,7 +585,9 @@ public class AnnualPermitServiceTest {
                 currentDate,
                 oneYearLater)).thenReturn(new ArrayList<>());
 
+        //then
         AnnualPermitResponseDto actual = annualPermitService.createAnnualPermitRequest(employee.getId(), annualPermitStartDate, annualPermitEndDate);
+
         assertNull(actual);
 
         verify(employeeService, times(2)).findByIdOrElseThrow(employee.getId());
@@ -621,7 +634,9 @@ public class AnnualPermitServiceTest {
                 currentDate,
                 oneYearLater)).thenReturn(new ArrayList<>());
 
+        //then
         AnnualPermitResponseDto actual = annualPermitService.createAnnualPermitRequest(employee.getId(), annualPermitStartDate, annualPermitEndDate);
+
         assertNull(actual);
 
         verify(employeeService, times(2)).findByIdOrElseThrow(employee.getId());
@@ -668,7 +683,9 @@ public class AnnualPermitServiceTest {
                 currentDate,
                 oneYearLater)).thenReturn(new ArrayList<>());
 
+        //then
         AnnualPermitResponseDto actual = annualPermitService.createAnnualPermitRequest(employee.getId(), annualPermitStartDate, annualPermitEndDate);
+
         assertNull(actual);
 
         verify(employeeService, times(2)).findByIdOrElseThrow(employee.getId());
@@ -721,7 +738,9 @@ public class AnnualPermitServiceTest {
                 currentDate,
                 oneYearLater)).thenReturn(new ArrayList<>());
 
+        //then
         AnnualPermitResponseDto actual = annualPermitService.createAnnualPermitRequest(employee.getId(), annualPermitStartDate, annualPermitEndDate);
+
         assertNull(actual);
 
         verify(employeeService, times(2)).findByIdOrElseThrow(employee.getId());
@@ -785,7 +804,9 @@ public class AnnualPermitServiceTest {
                 currentDate,
                 oneYearLater)).thenReturn(Collections.singletonList(usedAnnualPermit));
 
+        //then
         AnnualPermitResponseDto actual = annualPermitService.createAnnualPermitRequest(employee.getId(), annualPermitStartDate, annualPermitEndDate);
+
         assertNull(actual);
 
         verify(employeeService, times(2)).findByIdOrElseThrow(employee.getId());
@@ -824,6 +845,7 @@ public class AnnualPermitServiceTest {
                 employee.getStartDate(),
                 currentDate)).thenReturn(Collections.singletonList(annualPermit));
 
+        //then
         int actual = annualPermitService.getEmployeeUsedAdvanceAnnualPermit(employee);
 
         assertEquals(annualPermit.getAnnualPermitDays(), actual);
