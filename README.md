@@ -7,6 +7,7 @@ About the service,
 - Weekends (Saturday, Sunday) and public holidays are not counted as Permit.
 - As soon as the service starts to work, it pulls the public holidays in Turkey from **https://api.ubilisim.com/resmitatiller/** and keeps it in its memory as a list.
 - New employees can take up to 5 working days off as an advance. This application is valid for the first year only.
+- Annual Permit used new employees as an advance. Deducted from their Annual permit days in the 1st year.
 - When permission requests are created, they are in the status of `PENDING`, after admin approval.
   then it drops to `APPROVED` or `DENIED` status.
 - This service supports Turkish and English language for messages to be displayed in API response and warning messages.
