@@ -40,7 +40,7 @@ public class AnnualPermitController {
 
     @Operation(summary = "This api for approving or denying annual permit", description = "This api is for admin only!")
     @PostMapping("/admin/decision")
-    public ResponseEntity<Object> ApproveOrRejectPermitRequest(@RequestParam String lang,
+    public ResponseEntity<Object> approveOrRejectPermitRequest(@RequestParam String lang,
                                                                @RequestParam Long employeeId,
                                                                @RequestParam AnnualPermitStatus decision) {
 

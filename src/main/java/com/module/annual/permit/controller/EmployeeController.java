@@ -20,7 +20,7 @@ public class EmployeeController {
 
     private final ResponseCreator responseCreator;
 
-    @Operation(summary = "Create new Employee", description = "name and lastName cannot be blank")
+    @Operation(summary = "This api for create new employee", description = "name and lastName cannot be blank")
     @PostMapping("/create")
     public ResponseEntity<Object> createNewEmployee(@RequestParam String lang,
                                                     @Valid @RequestBody NewEmployeeRequestDto newEmployeeRequestDto) {

@@ -145,7 +145,7 @@ public class AnnualPermitService {
         }
 
         if (availableAnnualPermit < requiredAnnualPermitDays) {
-            throw new DataNotAcceptableException("invalid.annual.permit.request.day");
+            throw new DataNotAcceptableException("invalid.annual.permit.request.day", String.valueOf(availableAnnualPermit));
         }
 
         AnnualPermit savedAnnualPermit = this.save(AnnualPermit.builder()
